@@ -9,7 +9,6 @@ from customers.serializers import CustomerSerializer
 from products.serializers import ProductSerializer
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    # write with product_id, read expands product
     product_id = serializers.PrimaryKeyRelatedField(source='product', queryset=Product.objects.all())
     product    = ProductSerializer(read_only=True)
 
@@ -36,7 +35,6 @@ class OrderSerializer(serializers.ModelSerializer):
         for item in items_data:
             product = item['product']
             qty = item['quantity']
-            # if unit_price not provided -> use product.price
             price = item.get('unit_price', product.price)
 
             if product.stock < qty:
@@ -54,7 +52,6 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def update(self, instance, validated_data):
-        # Keep it simple: allow status change only via update/partial_update
         status = validated_data.get('status')
         if status:
             instance.status = status

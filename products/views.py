@@ -6,7 +6,7 @@ from .serializers import ProductSerializer
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.select_related('category').all()
     serializer_class = ProductSerializer
-    search_fields = ['name', 'description']  # ?search=iphone
+    search_fields = ['name', 'description'] 
 
     def get_queryset(self):
         qs = super().get_queryset()
